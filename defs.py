@@ -15,20 +15,32 @@ def getinventoryitem():
     print(f"Доброе утро, день {missions.day}, сегодня вам необходимо идти на пары")
     print("Что вы возьмете на пары в этот прекрасный день? =)")
     print(*items.home_items, sep="; ")
-    taken = str(input("Перечислите вещи через \";\" (без пробелов у ;) "))
+    taken = str(input("Перечислите вещи через \";\" (без пробелов у ;) ")) #пример: "ключи от хаты;рюкзак с шмотками на физру
     items.inventory = taken.split(";")
     show_inv()
-    checkItems()
     checkKeys()
 
 def checkKeys():
     if not("ключи от хаты" in items.inventory):
         print("Вы не взяли ключи от дома, вы не закрыли дверь, вашу хату обнесли, а вас сдали в детский дом. Игра окончена.")
         sys.exit(0)
-def checkItems():
-    if not("ключи от хаты" and "лопата" and "ноутбук" and "рюкзак со шмотками на физру" and "телефон" in items.inventory):
-        print("Вы путаетесь в своих решениях, вы упали без сознания...")
-        time.sleep(2)
-        print("Дальше только ПУСТОТА.....")
-        time.sleep(1)
-        sys.exit(0)
+
+def printheart():
+    print(" ██ ██ ")
+    time.sleep(0.5)
+    print("█▓▓█▓▒█")
+    time.sleep(0.5)
+    print("█▓▓▓▓▓█")
+    time.sleep(0.5)
+    print(" █▓▓▓█ ")
+    time.sleep(0.5)
+    print("  █▓█  ")
+    time.sleep(0.5)
+    print("   █   ")
+
+def printmpt():
+    # вывод ASCII-надписи "MPT"
+    print("  __  __ _____ _______\n |  \/  |  __ \__   __|\n | \  / | |__) | | |   \n | |\/| |  ___/  | |   \n | |  | | |      | |   \n |_|  |_|_|      |_|   ")
+def startnextday():
+    missions.day += 1
+    missions.startday()
