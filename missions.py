@@ -8,7 +8,7 @@ import missions
 
 day = 1 #счетчик дней
 luck = 0 #счёт
-def startevent(num):
+def startevent(num): #случайные события
 
     match(num):
         case 1:
@@ -18,11 +18,11 @@ def startevent(num):
             if answer == 1:
                 if("лопата" in items.inventory):
                     print("Вы долго оборонялись от куратора, но вас обезвредили и отправили в психбольницу, вы проиграли")
+                    badending("АААААА ОЧКИ С УСАМИ АААААА ОБЕД")
                 else:
                     print("Вас посчитали шизофреником с придуманной лопатой и отправили в дурдом.")
                     badending("Наркоман-извращенец")
 
-                day = 8
             if answer == 2:
                 r = random.randint(1,3)
                 match(r):
@@ -31,7 +31,7 @@ def startevent(num):
                         badending("Маманибей")
                     case 2:
                         print("Ваше имя перепутали, от вас ничего не надо")
-                        missions.luck += 10
+                        missions.luck += 70
                         pass
                     case 3:
                         print("Куратор вам предложил зарегистрироваться на каком-то бесполезном сайте")
@@ -48,7 +48,10 @@ def startevent(num):
             r = random.randint(1,3)
             print(f"Включилась сирена и вам надо сваливать на улицу, вы находитесь на {r} этаже.")
             print("Что вы сделаете? 1. Спрячусь под парту\n2.Спрыгну с окна\n3. Пойду за всеми")
-            ans = int(input(""))
+            try:
+                ans = int(input(""))
+            except ValueError:
+                print("Не число")
             match ans:
                 case 1:
                     rr = random.randint(1,2)
@@ -73,10 +76,9 @@ def startevent(num):
             print("СЕКРЕТНАЯ КОНЦОВКА")
             badending("Корова")
 
-def ending():
-
-    if (items.end.get(1) == "Сон"):
-        rnd = random.randint(1, 3)
+def ending(): #концовка отдельно
+    rnd = random.randint(1, 3)
+    if (items.end.get(rnd) == "Сон"):
         print("Но как бы не так........")
         time.sleep(3)
         print("Ваш автобус врезался, вы выходите на улицу и вдруг.......")
@@ -88,7 +90,6 @@ def ending():
         results(items.end.get(1))
 
     if(items.end.get(2) == "???"):
-        rnd = random.randint(1, 3)
         print("Ваш автобус врезается, вы слышите непонятные звуки на улице, все пропали, вы выходите на улицу")
         print("На улице все белым-бело.")
         time.sleep(2)
@@ -97,7 +98,6 @@ def ending():
         results(items.end.get(2))
 
     if(items.end.get(3) == "Удача"):
-        rnd = random.randint(1, 3)
         print("Вы спокойно приехали домой, легли на кровать, открыли телефон, а там новости, что ваша группа едет в поездку с куратором")
         print("Вас лично делают студсоветомом")
         missions.luck += 100
@@ -105,23 +105,28 @@ def ending():
 
 def results(estr):
     print("Вы прошли это испытание! Спасибо за игру")
-    print(f"Концовка: {estr}/3")
+    print(f"Концовка: {estr}. Одна из трёх каноничных")
     print(f"Счёт: {missions.luck}")
     time.sleep(2)
     defs.printheart() # <3
     sys.exit(0)
 def badending(estr):
-    print("Вы проиграли! Этот исход один из 12 шт.")
+    time.sleep(1)
+    print("Вы проиграли! Этот неудачный исход один из 22 шт.")
     print(f"Концовка: {estr}")
     print(f"Счёт: {missions.luck}")
+    print("Попробуйте начать игру заново!")
     sys.exit(0)
 
-def startday():
+
+
+def startday(): #дневные миссии
     if (missions.day == 1):
         print("Учимся...")
         time.sleep(5)
         print("Ваш день прошел скучно, у вас не было пар Ключника")
         missions.luck += 30
+        time.sleep(2)
         defs.startnextday()
     elif (missions.day == 2):
         defs.getinventoryitem()
@@ -129,7 +134,11 @@ def startday():
         time.sleep(1)
         print("Вы не сделали домашку по английскому, вам надо быстренько написать ее и отправить в классрум. Как быть?")
         print("1. Напишу на телефоне\n2. Напишу на ноутбуке\n3. Напишу в тетрадке и покажу очно")
-        ans = int(input())
+        try:
+            ans = int(input())
+        except ValueError:
+            print("Не число, вы проиграли")
+            badending("Нечисловой")
         if ans == 1:
             if("телефон" in items.inventory):
                 print("Довольно таки успешно вы всё написали")
@@ -154,7 +163,8 @@ def startday():
         defs.startnextday()
     elif (missions.day == 3):
         defs.getinventoryitem()
-        print("Сегодня охранники не были на турникетах и вы спокойно прошли в аудиторию со своей лопатой")
+        if ("лопата" in items.inventory):
+            print("Сегодня охранники не были на турникетах и вы спокойно прошли в аудиторию со своей лопатой")
         rnd = random.randint(1, 100)
         if (rnd >= 66):
             startevent(2)
@@ -163,7 +173,11 @@ def startday():
 
         print(
             "Что вы будете делать?\n1. Начать разбирать лопату что была повешена на рюкзаке\n2. Начать разбирать калаш\n3. Начать разборку ММГ ак-74 ")
-        inp = int(input())
+        try:
+            inp = int(input())
+        except ValueError:
+            print("Не число, вы проиграли")
+            badending("Нечисловой")
         match (inp):
             case 1:
                 if ("лопата" in items.inventory):
@@ -192,10 +206,14 @@ def startday():
         if (rnd >= 66):
             startevent(1)
         print("Сегодня у вас пара вышмата, вы не готовились, вам надо выкрутиться из такого неудобного положения")
-        ans = int(input("Что вы сделаете?\n1.Спишу у отличницы\n2.С умным видом буду сидеть в ноутбуке\n3.Спишу с телефона\n"))
+        try:
+            ans = int(input("Что вы сделаете?\n1.Спишу у отличницы\n2.С умным видом буду сидеть в ноутбуке\n3.Спишу с телефона\n"))
+        except ValueError:
+            print("Не число, вы проиграли")
+            badending("Нечисловой")
         if(ans == 1):
             print("Отличница на вас накричала своим писклявым голосом, преподаватель сразу же услышал, вы получили 2, игра окончена")
-            badending("Почему они так громко кричат?")
+            badending("За что аборигены съели Кука?")
         elif(ans == 2):
             if("ноутбук" in items.inventory):
                 print(
@@ -205,7 +223,8 @@ def startday():
                 time.sleep(1)
                 defs.startnextday()
             else:
-                print("Вы начали стучать пальцами по столу якобы по клавиатуре, преподаватель взбесился и вьебал вам парашу. Игра окончена!")
+                print("Вы начали стучать пальцами по столу якобы по клавиатуре, преподаватель взбесился и поставил вам два. Игра окончена!")
+                badending("Наркоман-извращенец")
 
         if(ans == 3):
             print("Преподаватель увидел у вас в руках телефон, но ничего не сделал, вы получили 3 ибо списывали с какого-то говносайта")
@@ -217,7 +236,11 @@ def startday():
         defs.getinventoryitem()
         print("Доброго утречка, соня. Ты проспал пару. Как выкручиваться будем?")
         print("1. Пофиг, прогуляю сегодня пару\n2. Блин, побегу прямо сейчас и успею на электричку\n3. Такси закажу (вариант для богатых)")
-        ans = int(input())
+        try:
+            ans = int(input())
+        except ValueError:
+            print("Не число, вы проиграли")
+            badending("Нечисловой")
         if ans == 1:
             print("Твоим родителям позвонил куратор и доложил, что ты разбирал лопату, родители тебя за это отправили в дурдом. Игра окончена!")
             badending("В пехоте пригодится")
@@ -227,18 +250,30 @@ def startday():
             badending("ЦППК <3")
 
         elif ans == 3:
-            print("Твои жалкие 500 рублей на сбербанке ушли на зарплату программистам в Яндексе, но приехал ты вовремя =)")
+            if ("телефон" in items.inventory):
+                print("Твои жалкие 500 рублей на сбербанке ушли на зарплату программистам в Яндексе, но приехал ты вовремя =)")
+            else:
+                print("Ты ж телефон не взял) Попуток поблизости нету :)")
+                badending("Такси-такси, вези-вези")
             missions.luck += 30
             if(random.randint(1,100) < 10):
                 startevent(3)
             print("Запыхавшись, ты прибегаешь в кабинет, сейчас пара физры. Свалить? ДА/НЕТ")
-            ans = str(input())
+            try:
+                ans = str(input())
+            except ValueError:
+                print("Не число, вы проиграли")
+                badending("Нечисловой")
             ans = ans.lower()
+            if not("рюкзак с шмотками на физру" in items.inventory):
+                print("Формы на физру нету, вам поставили 2 и отправили домой. Вы проиграли")
+                badending("Безформенный")
             if ans == "да":
                 print("Рано радовался, никто не отпустил! Ну ничего, отсидишь свою пару")
             elif ans == "нет":
                 print("Ты получил пятерку за норматив, идешь довольный на следующую пару!")
                 missions.luck += 20
+
             else:
                 print("Чего-чего?")
                 badending("Неправильный ответ")
