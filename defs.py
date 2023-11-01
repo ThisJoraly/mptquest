@@ -1,3 +1,4 @@
+import csv
 import sys
 import time
 import json
@@ -64,20 +65,20 @@ def read_json_file(file_name):
         data = json.load(file)
     return data
 
-#def dict_to_csv(file_name, dict):
-#    with open(file_name, 'w') as f:  # You will need 'wb' mode in Python 2.x
-#        w = csv.DictWriter(f, dict.keys())
-#        w.writeheader()
-#        w.writerow(dict)
-#def dict_to_csv2(file_name, dict):
-#    with open(file_name, 'w', newline='') as file:
-#        writer = csv.DictWriter(file, fieldnames=dict[0].keys())
-#        writer.writeheader()
-#        writer.writerows(dict)
+def dict_to_csv2(file_name, dict):
+   with open(file_name, 'w') as f:  # You will need 'wb' mode in Python 2.x
+       w = csv.DictWriter(f, dict.keys())
+       w.writeheader()
+       w.writerow(dict)
+def dict_to_csv(file_name, dict):
+   with open(file_name, 'w', newline='') as file:
+       writer = csv.DictWriter(file, fieldnames=dict[0].keys())
+       writer.writeheader()
+       writer.writerows(dict)
 
-#def json_to_csv(json_name, csv_name):
-#    dict = read_json_file(json_name)
-#    dict_to_csv2(csv_name, dict)
+def json_to_csv(json_name, csv_name):
+   dict = read_json_file(json_name)
+   dict_to_csv(csv_name, dict)
 
 def checkKeys():
     if not("ключи от хаты" in items.inventory):
@@ -103,3 +104,4 @@ def printmpt():
 def startnextday():
     missions.day += 1
     missions.startday()
+

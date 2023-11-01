@@ -105,6 +105,8 @@ def ending(): #концовка отдельно
         results(items.end.get(3))
 
 def results(estr):
+    items.dict = defs.read_json_file("file.json")
+    defs.add_ending(items.dict, estr, "file.json")
     print("Вы прошли это испытание! Спасибо за игру")
     print(f"Концовка: {estr}. Одна из трёх каноничных")
     print(f"Счёт: {missions.luck}")
@@ -120,6 +122,7 @@ def badending(estr):
     print(f"Счёт: {missions.luck}")
     print("Попробуйте начать игру заново!")
     sys.exit(0)
+
 
 
 
