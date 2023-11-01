@@ -52,6 +52,7 @@ def startevent(num): #случайные события
                 ans = int(input(""))
             except ValueError:
                 print("Не число")
+                badending("Нечисловой")
             match ans:
                 case 1:
                     rr = random.randint(1,2)
@@ -111,6 +112,8 @@ def results(estr):
     defs.printheart() # <3
     sys.exit(0)
 def badending(estr):
+    items.dict = defs.read_json_file("file.json")
+    defs.add_ending(items.dict, estr, "file.json")
     time.sleep(1)
     print("Вы проиграли! Этот неудачный исход один из 22 шт.")
     print(f"Концовка: {estr}")
